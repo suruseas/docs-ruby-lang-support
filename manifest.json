@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Docs ruby lang support(ja)",
+  "description": "Ruby Reference Manual Support extensions(ja)",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "js": [
+        "dist/content.umd.js"
+      ],
+      "matches": [
+        "https://docs.ruby-lang.org/ja/*"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "*"
+  ]
+}
