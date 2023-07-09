@@ -3,6 +3,21 @@ const path = require('path');
 module.exports = {
   mode: 'development',
 
+  module: {
+    rules: [
+      {
+        test: /\.css/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: { url: false }
+          }
+        ]
+      }
+    ]
+  },
+
   entry: {
     index: "./src/index.js",
     content: "./src/content.js"

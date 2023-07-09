@@ -1,3 +1,4 @@
+import "./style.css";
 import { DefaultRubyVM } from "ruby-head-wasm-wasi/dist/browser.umd.js";
 export var rubyVM;
 
