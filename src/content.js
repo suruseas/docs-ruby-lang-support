@@ -47,7 +47,13 @@ const main = async () => {
       }
       evalRubyCode(`
         require 'js'
-        eval('${textarea.value}')
+        begin
+          eval('${textarea.value}')
+        rescue => e
+          puts 'Traceback (most recent call last):'
+          puts e.backtrace.map { |v| "\tfrom #{v}" }.join("\n")
+          puts "#{e.class} (#{e.message})"
+        end
       `);
       // もとに戻す
       console.log = org_console_log;
