@@ -48,7 +48,7 @@ const main = async () => {
       evalRubyCode(`
         require 'js'
         begin
-          eval('${textarea.value}')
+          eval(%q[${textarea.value}])
         rescue => e
           puts 'Traceback (most recent call last):'
           puts e.backtrace.map { |v| "\tfrom #{v}" }.join("\n")
