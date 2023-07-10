@@ -13,6 +13,15 @@ const autoAdjustTextarea = function (textarea) {
   });
 }
 
+// 改行コードだけのログ出力が予期したものかどうかわからないので、使えなかった
+// 例)
+// 1688999422> [1, 2, 3]1688999422>
+// 1688999422> ["A", "B", "C"]1688999422>
+// 1688999422> ["A", "B", "C"]1688999422>
+// const getCurrentTimestamp = function () {
+//   return Math.floor(Date.now() / 1000);
+// }
+
 const main = async () => {
   printInitMessage();
 
@@ -34,12 +43,15 @@ const main = async () => {
     button.appendChild(document.createTextNode('EXEC'));
     button.addEventListener("click", () => {
       var target = document.getElementById(resultTextareaId);
+      // 枠を表示する
+      target.style.display = 'block';
       // 消す
       target.innerText = '';
       // 元のロジックを対比する
       var org_console_log = console.log;
       console.log = (...args) => {
         for (let arg of args) {
+          //target.innerText += `${getCurrentTimestamp()}> ${arg}`;
           target.innerText += arg;
         }
       }

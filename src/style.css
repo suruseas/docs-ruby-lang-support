@@ -4,15 +4,24 @@ code {
 
 .highlight__copy-text {
   position: static;
+  padding: 5px;
   width: 100%;
+  line-height: 20px;
+  font-size: 90%;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  border: none;
+  resize: none;
 }
 
 .result {
-  margin: 5px;
+  display: none;
   padding: 5px;
   background-color: dimgray;
+  width: 100%;
   line-height: 20px;
   color: white;
+  font-size: 90%;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
 }
 
 .btn_execute {
