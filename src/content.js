@@ -16,21 +16,50 @@ const autoAdjustTextarea = function (textarea) {
 const main = async () => {
   printInitMessage();
 
-  evalRubyCode(`
-    require "js"
-    JS::eval("console.log('hello ruby')")
-  `);
-
   const textareas = document.querySelectorAll("pre.ruby textarea");
 
-  textareas.forEach((textarea) => {
-    //console.log(textareas);
-    // 初期表示で高さを合わせる
+  textareas.forEach((textarea, index) => {
+    // 初期表示
     autoAdjustTextarea(textarea);
-    // 入力に合わせる
     textarea.addEventListener("input", () => {
       autoAdjustTextarea(textarea)
-    })
+    });
+
+    // 結果を保存するtextareaのid
+    const resultTextareaId = `result_index_${index}`;
+
+    // 実行ボタン
+    var button = document.createElement('span');
+    button.classList.add('btn_execute');
+    button.appendChild(document.createTextNode('EXEC'));
+    button.addEventListener("click", () => {
+      var target = document.getElementById(resultTextareaId);
+      // 消す
+      target.innerText = '';
+      // 元のロジックを対比する
+      var org_console_log = console.log;
+      console.log = (...args) => {
+        for (let arg of args) {
+          target.innerText += arg;
+        }
+      }
+      evalRubyCode(`
+        require 'js'
+        eval('${textarea.value}')
+      `);
+      // もとに戻す
+      console.log = org_console_log;
+    });
+    textarea.parentNode.insertBefore(button, textarea.nextElementSibling);
+
+    // 結果表示枠
+    var result = document.createElement('div');
+    result.setAttribute('id', resultTextareaId);
+    result.classList.add('result');
+    result.addEventListener("input", () => {
+      autoAdjustTextarea(result)
+    });
+    textarea.parentNode.insertBefore(result, button.nextElementSibling);
   });
 };
 

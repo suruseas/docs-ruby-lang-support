@@ -6,3 +6,20 @@ code {
   position: static;
   width: 100%;
 }
+
+.result {
+  margin: 5px;
+  padding: 5px;
+  background-color: dimgray;
+  line-height: 20px;
+  color: white;
+}
+
+.btn_execute {
+  float: right;
+  margin: 0 -1.1em 0.25em 0.5em;
+  padding: 0.25em 0.5em;
+  background: #DDD;
+  opacity: 0.75;
+  cursor: pointer;
+}
