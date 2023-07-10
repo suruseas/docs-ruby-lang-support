@@ -2,6 +2,17 @@ import { initRubyVM, printInitMessage, evalRubyCode } from "./index.js";
 
 await initRubyVM();
 
+const autoAdjustTextarea = function (textarea) {
+  const resetHeight = new Promise(resolve => {
+    resolve((textarea.style.height = "auto"))
+  })
+
+  resetHeight.then(() => {
+    const scrollHeight = textarea.scrollHeight
+    textarea.style.height = scrollHeight + "px"
+  });
+}
+
 const main = async () => {
   printInitMessage();
 
@@ -10,11 +21,16 @@ const main = async () => {
     JS::eval("console.log('hello ruby')")
   `);
 
-  // pre.rubyを全部検索する
-  const codes = document.querySelectorAll("pre.ruby code");
+  const textareas = document.querySelectorAll("pre.ruby textarea");
 
-  codes.forEach((code) => {
-    console.log(code.textContent);
+  textareas.forEach((textarea) => {
+    //console.log(textareas);
+    // 初期表示で高さを合わせる
+    autoAdjustTextarea(textarea);
+    // 入力に合わせる
+    textarea.addEventListener("input", () => {
+      autoAdjustTextarea(textarea)
+    })
   });
 };
 
