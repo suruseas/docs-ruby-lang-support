@@ -69,9 +69,11 @@ const main = async () => {
     });
     textarea.parentNode.insertBefore(result, button.nextElementSibling);
 
-    // codeタグにクリックイベントをつける
-    let code = textarea.previousElementSibling;
-    code.addEventListener("click", () => {
+    // preタグにクリックイベントをつける
+    let pre = textarea.parentNode;
+    pre.addEventListener("click", () => {
+      // codeタグ
+      let code = textarea.previousElementSibling;
       code.style.display = 'none';
       button.style.display = 'block';
       textarea.style.display = 'block';
