@@ -28,12 +28,6 @@ const main = async () => {
   const textareas = document.querySelectorAll("pre.ruby textarea");
 
   textareas.forEach((textarea, index) => {
-    // 初期表示
-    autoAdjustTextarea(textarea);
-    textarea.addEventListener("input", () => {
-      autoAdjustTextarea(textarea)
-    });
-
     // 結果を保存するtextareaのid
     const resultTextareaId = `result_index_${index}`;
 
@@ -72,6 +66,19 @@ const main = async () => {
       autoAdjustTextarea(result)
     });
     textarea.parentNode.insertBefore(result, button.nextElementSibling);
+
+    // codeタグにクリックイベントをつける
+    let code = textarea.previousElementSibling;
+    code.addEventListener("click", () => {
+      code.style.display = 'none';
+      button.style.display = 'block';
+      textarea.style.display = 'block';
+      // 初期表示
+      autoAdjustTextarea(textarea);
+      textarea.addEventListener("input", () => {
+        autoAdjustTextarea(textarea)
+      });
+    });
   });
 };
 
