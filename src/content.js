@@ -57,6 +57,10 @@ const main = async () => {
       `);
       // もとに戻す
       console.log = org_console_log;
+      // もし出力文字がない場合はメッセージを表示する
+      if (target.innerText.length === 0) {
+        target.innerText = '------------------------\nExecuted but no output.';
+      }
     });
     textarea.parentNode.insertBefore(button, textarea.nextElementSibling);
 
