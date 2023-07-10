@@ -36,7 +36,7 @@ const main = async () => {
       target.style.display = 'block';
       // 結果をクリアする
       target.innerText = '';
-      // 元のロジックを対比する
+      // 元のロジックを退避する
       var org_console_log = console.log;
       console.log = (...args) => {
         for (let arg of args) {
