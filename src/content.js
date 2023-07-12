@@ -1,6 +1,8 @@
-import { initRubyVM, printInitMessage, evalRubyCode } from "./index.js";
+import { initRubyVM, getRubyVersion, evalRubyCode } from "./index.js";
 
 await initRubyVM();
+
+const rubyVersion = await getRubyVersion();
 
 const autoAdjustTextarea = function (textarea) {
   const resetHeight = new Promise(resolve => {
@@ -18,8 +20,7 @@ const getCurrentTimestamp = function () {
 }
 
 const main = async () => {
-  printInitMessage();
-
+  console.log(rubyVersion);
   const textareas = document.querySelectorAll("pre.ruby textarea");
 
   textareas.forEach((textarea, index) => {
@@ -45,6 +46,7 @@ const main = async () => {
           target.innerText += arg;
         }
       }
+      // 非同期でrubyコードを実行する
       evalRubyCode(`
         require 'js'
         begin
@@ -54,14 +56,18 @@ const main = async () => {
           puts e.backtrace.map { |v| "\tfrom #{v}" }.join("\n")
           puts "#{e.class} (#{e.message})"
         end
-      `);
-      // もとに戻す
-      console.log = org_console_log;
-      // もし出力文字がない場合はメッセージを表示する
-      if (target.innerText.length === 0) {
-        target.innerText = '------------------------\nExecuted but no output.';
-      }
+      `).catch((e) => {
+        console.log(e);
+      }).then(() => {
+        // もとに戻す
+        console.log = org_console_log;
+        // もし出力文字がない場合はメッセージを表示する
+        if (target.innerText.length === 0) {
+          target.innerText = '------------------------\nExecuted but no output.';
+        }
+      });
     });
+
     textarea.parentNode.insertBefore(button, textarea.nextElementSibling);
 
     // 結果表示枠
@@ -88,6 +94,8 @@ const main = async () => {
       });
     });
   });
+
+  console.log('initialized.');
 };
 
 main();

@@ -13,11 +13,12 @@ export const initRubyVM = async () => {
   rubyVM = vm;
 }
 
-export const printInitMessage = () => {
-  rubyVM.printVersion();
+export const getRubyVersion = async () => {
+  //rubyVM.printVersion();
+  return rubyVM.eval(`"ruby #{RUBY_VERSION}p#{RUBY_PATCHLEVEL} [#{RUBY_RELEASE_DATE} #{RUBY_PLATFORM}]"`).toString();
 };
 
 // 文字列のrubyコードを実行
 export const evalRubyCode = async (code) => {
-  rubyVM.eval(code);
+  return rubyVM.eval(code);
 }

@@ -1,5 +1,11 @@
 https://semaphoreci.com/blog/ruby-webassembly
 
+# 開発用
+
+```
+npm run build
+```
+
 # TOOD:
 
 - manifest v2で実装しているのでv3に移行する
