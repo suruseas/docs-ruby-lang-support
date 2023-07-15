@@ -1,18 +1,31 @@
-.highlight__copy-text {
-  position: static;
-  padding: 5px;
-  width: 100%;
-  line-height: 20px;
+pre.highlight.ruby code.language-ruby {
+  outline: 0px solid transparent;
   font-size: 90%;
   font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-  border: none;
-  resize: none;
-  display: none;
-  outline: none;
+  line-height: initial;
 }
 
-.result {
+.document-ruby-lang-support-button-frame {
+  /* 表示時はflex */
   display: none;
+  justify-content: flex-end;
+  margin-right: -1.1em;
+}
+
+.document-ruby-lang-support-button {
+  margin-left: 1.5em;
+  padding: 0.25em 0.5em;
+  background: #DDD;
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.document-ruby-lang-support-button:hover {
+  background: #EE8;
+  opacity: 1;
+}
+
+.document-ruby-lang-support-result {
   padding: 5px;
   background-color: dimgray;
   width: 100%;
@@ -20,14 +33,6 @@
   color: white;
   font-size: 90%;
   font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-}
-
-.btn_execute {
-  float: right;
-  margin: 0 -1.1em 0.25em 0.5em;
-  padding: 0.25em 0.5em;
-  background: #DDD;
-  opacity: 0.75;
-  cursor: pointer;
   display: none;
+  text-wrap: wrap;
 }

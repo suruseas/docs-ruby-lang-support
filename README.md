@@ -14,3 +14,4 @@ npm run build
 - (JS)[https://github.com/ruby/ruby.wasm/blob/main/ext/js/lib/js.rb] で div[:innerText]が動かない。理由は不明…
 - 何回か試していると定数とかが流用されているような疑惑あり
   - vmが同じだからと思う。クリアできんのかな。
+- COPYボタンは現在編集中のものをコピーできるように置き換える

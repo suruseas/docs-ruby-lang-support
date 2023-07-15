@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack"
   },
   "dependencies": {
+    "prismjs": "^1.29.0",
     "ruby-head-wasm-wasi": "^0.3.0",
     "webpack": "^5.74.0"
   },
