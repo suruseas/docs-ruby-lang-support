@@ -12,7 +12,7 @@ const getClipCopyCode = (textContent) => {
   return textContent.replace(/^\n+/, "").replace(/\n{2,}$/, "\n")
 }
 
-// domの出現を待つ(copyボタンが別管理JSで生成されているので作成を待つ)
+// domの生成を待って取得(別管理JSで生成されているので作成を待つ)
 const waitQuerySelector = async (node, selector) => {
   let obj = null;
   for (let i = 0; i < 10 && !obj; i++) {

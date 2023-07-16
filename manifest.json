@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "るりまサポート",
-  "description": "Ruby 3.2 リファレンスマニュアル(るりま)に掲載のRubyコードを、Ruby Wasmで実行できるようにします",
+  "description": "Ruby 3.2 リファレンスマニュアル(るりま)に掲載のサンプルコードを、Ruby Wasmを使って実行させることができます。",
   "version": "1.1.0",
   "content_scripts": [
     {
