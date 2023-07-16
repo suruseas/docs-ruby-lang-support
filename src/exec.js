@@ -19,6 +19,6 @@ export const execRubyCode = async (code, logger) => {
     console.log(e);
   }).then((result) => {
     console.log = originalConsoleLog;
-    return result.toString();
+    return result.toJS();
   });
 }

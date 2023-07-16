@@ -97,7 +97,7 @@ const main = async () => {
           execRubyCode(code.textContent, logger).then((res) => {
             // もし出力文字がない場合はeval結果を表示する
             if (result.innerText.length === 0) {
-              result.innerText = res;
+              result.innerText = res ? res : 'nil';
             }
           })
         });
