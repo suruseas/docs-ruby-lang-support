@@ -1,7 +1,5 @@
-// https://codepen.io/jeffward/pen/OJjPKYo
-
 // CaretUtil library, based on
-// https://stackoverflow.com/questions/6249095/41034697#41034697
+// https://codepen.io/jeffward/pen/OJjPKYo
 export const CaretUtil = {};
 
 /**
