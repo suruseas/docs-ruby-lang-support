@@ -94,10 +94,10 @@ const main = async () => {
             }
           }
           // rubyコードの実行
-          execRubyCode(code.textContent, logger).then(() => {
-            // もし出力文字がない場合はメッセージを表示する
+          execRubyCode(code.textContent, logger).then((res) => {
+            // もし出力文字がない場合はeval結果を表示する
             if (result.innerText.length === 0) {
-              result.innerText = 'no output.';
+              result.innerText = res;
             }
           })
         });
