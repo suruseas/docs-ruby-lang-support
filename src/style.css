@@ -5,24 +5,27 @@ pre.highlight.ruby code.language-ruby {
   line-height: initial;
 }
 
-.document-ruby-lang-support-button-frame {
-  /* 表示時はflex */
-  display: none;
-  justify-content: flex-end;
-  margin-right: -1.1em;
+.document-ruby-lang-support-spacer {
+  height: 1.0em;
 }
 
 .document-ruby-lang-support-button {
-  margin-left: 1.5em;
+  float: right;
+  margin: 0 -1.1em 0.25em 0.5em;
   padding: 0.25em 0.5em;
   background: #DDD;
   opacity: 0.75;
   cursor: pointer;
+  display: none;
 }
 
 .document-ruby-lang-support-button:hover {
   background: #EE8;
   opacity: 1;
+}
+
+.document-ruby-lang-support-button-reset {
+  margin-right: 1.0em;
 }
 
 .document-ruby-lang-support-result {

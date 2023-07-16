@@ -6,9 +6,22 @@ await initRubyVM();
 
 const rubyVersion = await getRubyVersion();
 
+// コピー用のテキストを取得する
 const getClipCopyCode = (textContent) => {
   // 余計な改行を除去しておく
   return textContent.replace(/^\n+/, "").replace(/\n{2,}$/, "\n")
+}
+
+// domの出現を待つ(copyボタンが別管理JSで生成されているので作成を待つ)
+const waitQuerySelector = async (node, selector) => {
+  let obj = null;
+  for (let i = 0; i < 10 && !obj; i++) {
+    obj = await new Promise(resolve => setTimeout(() => resolve(node.querySelector(selector), 100)));
+  }
+
+  if (!obj) { console.error(`${selector} could not be found.`); }
+
+  return obj;
 }
 
 const main = async () => {
@@ -52,23 +65,25 @@ const main = async () => {
       // code編集結果はコピー用のtextareaの内容を同期する
       code.addEventListener('input', () => {
         syncClipCopyTextarea(container, code);
-      })
+      });
 
-      // 枠
-      const frame = document.createElement('div');
-      frame.classList.add('document-ruby-lang-support-button-frame');
+      const spacer = document.createElement('div');
+      spacer.classList.add('document-ruby-lang-support-spacer');
+      container.insertBefore(spacer, code.nextElementSibling);
 
       // 結果表示枠
       const result = document.createElement('div');
       result.classList.add('document-ruby-lang-support-result');
-      container.insertBefore(result, code.nextElementSibling);
+      container.insertBefore(result, spacer.nextElementSibling);
 
       // 実行ボタン
       const exec = document.createElement('span');
       (async () => {
         exec.classList.add('document-ruby-lang-support-button');
         exec.appendChild(document.createTextNode('EXEC'));
-        exec.addEventListener("click", () => {
+        container.insertBefore(exec, spacer.nextElementSibling);
+        exec.addEventListener("click", (event) => {
+          event.stopPropagation();
           // 枠を表示する
           result.style.display = 'block';
           // 結果をクリアする
@@ -82,40 +97,47 @@ const main = async () => {
           execRubyCode(code.textContent, logger).then(() => {
             // もし出力文字がない場合はメッセージを表示する
             if (result.innerText.length === 0) {
-              result.innerText = '------------------------\nExecuted but no output.';
+              result.innerText = 'no output.';
             }
           })
         });
       })();
 
-      // リセットボタン
-      const reset = document.createElement('span');
-      (async () => {
-        reset.classList.add('document-ruby-lang-support-button');
-        reset.appendChild(document.createTextNode('RESET'));
-        reset.addEventListener("click", () => {
-          // オリジナルも一番上には空行がセットされているので同じように追加
-          code.textContent = "\n" + initialCode;
-          highlight();
-          // 結果枠を非表示に戻す
-          result.style.display = 'none';
-          // 編集されたのでコピー用のtextareaも初期化する
-          syncClipCopyTextarea(container, code);
-        });
-      })();
+      // リセットボタンを含む枠の制御
+      waitQuerySelector(container, 'span.highlight__copy-button').then((copy) => {
+        // リセットボタン
+        const reset = document.createElement('span');
+        if (copy) {
+          const frame = document.createElement('span');
+          // リセットボタンを移動する
+          frame.appendChild(copy);
+          container.prepend(frame);
 
-      // リセットボタン, 実行ボタンの順番
-      frame.appendChild(reset);
-      frame.appendChild(exec);
+          reset.classList.add('document-ruby-lang-support-button', 'document-ruby-lang-support-button-reset');
+          reset.appendChild(document.createTextNode('RESET'));
+          // リセットボタンはcopyのframeに追加する
+          frame.appendChild(reset);
+          reset.addEventListener("click", (event) => {
+            event.stopPropagation();
+            // オリジナルも一番上には空行がセットされているので同じように追加
+            code.textContent = "\n" + initialCode;
+            highlight();
+            // 結果枠を非表示に戻す
+            result.style.display = 'none';
+            // 編集されたのでコピー用のtextareaも初期化する
+            syncClipCopyTextarea(container, code);
+          });
 
-      container.insertBefore(frame, code.nextElementSibling);
-
-      // pre枠をクリックでflexに変更する(ボタンフレーム非表示 -> 表示)
-      (async () => {
-        container.addEventListener("click", () => {
-          frame.style.display = 'flex';
-        });
-      })();
+          // pre枠をクリックで各種ボタンを表示する
+          container.addEventListener("click", (event) => {
+            if (event.target == event.currentTarget) {
+              [exec, reset].forEach((element) => {
+                element.style.display = 'inline';
+              });
+            }
+          });
+        }
+      });
     })();
   });
 
