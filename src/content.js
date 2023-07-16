@@ -138,6 +138,10 @@ const main = async () => {
               });
             }
           });
+
+          if (index + 1 === containers.length) {
+            console.log('setuped.');
+          }
         }
       });
     })();

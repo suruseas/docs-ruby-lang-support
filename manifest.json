@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "js": [
-        "dist/content.umd.js"
+        "dist/content.js"
       ],
       "matches": [
         "https://docs.ruby-lang.org/ja/*"
