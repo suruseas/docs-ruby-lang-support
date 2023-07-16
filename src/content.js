@@ -6,6 +6,11 @@ await initRubyVM();
 
 const rubyVersion = await getRubyVersion();
 
+const getClipCopyCode = (textContent) => {
+  // 余計な改行を除去しておく
+  return textContent.replace(/^\n+/, "").replace(/\n{2,}$/, "\n")
+}
+
 const main = async () => {
   console.log(rubyVersion);
   const containers = document.querySelectorAll("pre.highlight.ruby");
@@ -14,6 +19,9 @@ const main = async () => {
     // 表示されているcode領域
     const code = container.querySelector('code');
     code.classList.add('language-ruby');
+
+    // 初期表示時のコード内容を保持しておく
+    const initialCode = getClipCopyCode(code.textContent);
 
     // codeの内容でシンタックスハイライトするメソッド
     const highlight = () => {
@@ -26,6 +34,12 @@ const main = async () => {
     highlight();
     code.setAttribute("contenteditable", "true");
 
+    // コピー用のtextareaの同期用
+    const syncClipCopyTextarea = (container, code) => {
+      const copyText = container.querySelector('textarea');
+      copyText.innerHTML = getClipCopyCode(code.textContent);
+    }
+
     // 初期表示に影響しない部分は非同期で処理する
     (async () => {
       // code編集時のハイライトできるようにする
@@ -35,6 +49,10 @@ const main = async () => {
           CaretUtil.setCaretPosition(code, index);
         });
       });
+      // code編集結果はコピー用のtextareaの内容を同期する
+      code.addEventListener('input', () => {
+        syncClipCopyTextarea(container, code);
+      })
 
       // 枠
       const frame = document.createElement('div');
@@ -43,7 +61,7 @@ const main = async () => {
       // 結果表示枠
       const result = document.createElement('div');
       result.classList.add('document-ruby-lang-support-result');
-      code.parentElement.insertBefore(result, code.nextElementSibling);
+      container.insertBefore(result, code.nextElementSibling);
 
       // 実行ボタン
       const exec = document.createElement('span');
@@ -70,21 +88,19 @@ const main = async () => {
         });
       })();
 
-      // 元コードが保持されているtextarea
-      const textarea = container.querySelector('textarea');
-
       // リセットボタン
       const reset = document.createElement('span');
       (async () => {
         reset.classList.add('document-ruby-lang-support-button');
         reset.appendChild(document.createTextNode('RESET'));
         reset.addEventListener("click", () => {
-          const textarea = container.querySelector('textarea');
           // オリジナルも一番上には空行がセットされているので同じように追加
-          code.textContent = "\n" + textarea.value;
+          code.textContent = "\n" + initialCode;
           highlight();
           // 結果枠を非表示に戻す
           result.style.display = 'none';
+          // 編集されたのでコピー用のtextareaも初期化する
+          syncClipCopyTextarea(container, code);
         });
       })();
 
@@ -94,9 +110,9 @@ const main = async () => {
 
       container.insertBefore(frame, code.nextElementSibling);
 
-      // pre枠をクリックでflexに変更する(非表示 -> 表示)
+      // pre枠をクリックでflexに変更する(ボタンフレーム非表示 -> 表示)
       (async () => {
-        code.parentElement.addEventListener("click", () => {
+        container.addEventListener("click", () => {
           frame.style.display = 'flex';
         });
       })();
