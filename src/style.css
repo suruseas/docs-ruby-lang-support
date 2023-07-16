@@ -28,7 +28,8 @@ pre.highlight.ruby code.language-ruby {
 .document-ruby-lang-support-result {
   padding: 5px;
   background-color: dimgray;
-  width: 100%;
+  /* 100%でなぜだめなのか */
+  width: 101%;
   line-height: 20px;
   color: white;
   font-size: 90%;
