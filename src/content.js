@@ -122,8 +122,10 @@ const main = async () => {
             // オリジナルも一番上には空行がセットされているので同じように追加
             code.textContent = "\n" + initialCode;
             highlight();
-            // 結果枠を非表示に戻す
-            result.style.display = 'none';
+            // 初期状態にする
+            [result, reset, exec].forEach((element) => {
+              element.style.display = 'none';
+            });
             // 編集されたのでコピー用のtextareaも初期化する
             syncClipCopyTextarea(container, code);
           });
