@@ -8,6 +8,12 @@ GoogleChromeの機能拡張で、Ruby 3.2 リファレンスマニュアル(る�
 npm run build
 ```
 
+## make extension
+
+```
+npm run make
+```
+
 ## memo
 
 - ruby-3_2-wasm-wasi は 現時点では ruby3.2.0p-0 (2022-12-25) で少し古いので ruby-head-wasm-wasi を利用
