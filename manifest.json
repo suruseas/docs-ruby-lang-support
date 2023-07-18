@@ -3,6 +3,11 @@
   "name": "るりまサポート",
   "description": "Ruby 3.2 リファレンスマニュアル(るりま)に掲載のサンプルコードを、Ruby Wasmを使って実行させることができます。",
   "version": "1.2.0",
+  "icons": {
+    "16": "src/images/icon16.png",
+    "48": "src/images/icon48.png",
+    "128": "src/images/icon128.png"
+  },
   "content_scripts": [
     {
       "js": [
