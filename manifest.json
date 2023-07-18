@@ -20,11 +20,11 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": [
-        "*"
-      ],
       "matches": [
-        "<all_urls>"
+        "https://docs.ruby-lang.org/*"
+      ],
+      "resources": [
+        "node_modules/ruby-head-wasm-wasi/dist/**"
       ]
     }
   ]
