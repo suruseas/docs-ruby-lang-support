@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "webpack",
-    "zip": "git archive HEAD --worktree-attributes -o docs_ruby_lang_support.zip"
+    "zip": "zip -r docs_ruby_lang_support.zip dist/ node_modules/ manifest.json src/images/"
   },
   "dependencies": {
     "prismjs": "^1.29.0",
