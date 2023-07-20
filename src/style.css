@@ -1,3 +1,10 @@
+pre.highlight.ruby::before {
+  content: url("chrome-extension://__MSG_@@extension_id__/src/images/icon16.png");
+  position: absolute;
+  top: 0.25em;
+  left: 1.5em;
+}
+
 pre.highlight.ruby code.language-ruby {
   outline: 0px solid transparent;
   font-size: 90%;

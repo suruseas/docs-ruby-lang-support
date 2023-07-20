@@ -46,6 +46,7 @@ const main = async () => {
     // 初期表示でハイライトする
     highlight();
     code.setAttribute("contenteditable", "true");
+    code.setAttribute("spellcheck", "false");
 
     // コピー用のtextareaの同期用
     const syncClipCopyTextarea = (container, code) => {
