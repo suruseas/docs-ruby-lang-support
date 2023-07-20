@@ -18,3 +18,7 @@ npm run make
 
 - ruby-3_2-wasm-wasi は 現時点では ruby3.2.0p-0 (2022-12-25) で少し古いので ruby-head-wasm-wasi を利用
   - ruby-3_2-wasm-wasi 利用時にはbuild時にエラーが出るので `npm install url` が必要
+
+## todo
+
+- パッケージサイズを小さくする。node_modulesに不要な物が多い。
