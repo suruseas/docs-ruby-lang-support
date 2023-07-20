@@ -24,6 +24,37 @@ const waitQuerySelector = async (node, selector) => {
   return obj;
 }
 
+const executeCode = (codeText, resultElement) => {
+  // 結果枠を表示する
+  resultElement.style.display = 'block';
+  // 結果をクリアする
+  resultElement.innerText = '';
+  const logger = (...args) => {
+    for (let arg of args) {
+      resultElement.innerText += arg;
+    }
+  }
+  // rubyコードの実行
+  execRubyCode(codeText, logger).then((res) => {
+    // もし出力文字がない場合はeval結果を表示する
+    if (resultElement.innerText.length === 0) {
+      resultElement.innerText = res ? res : 'nil';
+    }
+    // アニメーション
+    playAnimation(resultElement, 'opacityChanging');
+  });
+}
+
+// アニメーション再実行
+const playAnimation = (element, animationClassName) => {
+  element.className = element.className.replace(animationClassName, '');
+  window.requestAnimationFrame(function (time) {
+    window.requestAnimationFrame(function (time) {
+      element.className = `${element.className} ${animationClassName}`;
+    });
+  });
+}
+
 const main = async () => {
   console.log(rubyVersion);
   const containers = document.querySelectorAll("pre.highlight.ruby");
@@ -79,30 +110,8 @@ const main = async () => {
 
       // 実行ボタン
       const exec = document.createElement('span');
-      (async () => {
-        exec.classList.add('document-ruby-lang-support-button');
-        exec.appendChild(document.createTextNode('EXEC'));
-        container.insertBefore(exec, spacer.nextElementSibling);
-        exec.addEventListener("click", (event) => {
-          event.stopPropagation();
-          // 枠を表示する
-          result.style.display = 'block';
-          // 結果をクリアする
-          result.innerText = '';
-          const logger = (...args) => {
-            for (let arg of args) {
-              result.innerText += arg;
-            }
-          }
-          // rubyコードの実行
-          execRubyCode(code.textContent, logger).then((res) => {
-            // もし出力文字がない場合はeval結果を表示する
-            if (result.innerText.length === 0) {
-              result.innerText = res ? res : 'nil';
-            }
-          })
-        });
-      })();
+      exec.classList.add('document-ruby-lang-support-exec');
+      container.insertBefore(exec, code);
 
       // リセットボタンを含む枠の制御
       waitQuerySelector(container, 'span.highlight__copy-button').then((copy) => {
@@ -118,13 +127,26 @@ const main = async () => {
           reset.appendChild(document.createTextNode('RESET'));
           // リセットボタンはcopyのframeに追加する
           frame.appendChild(reset);
+
+          // 実行ボタン押下イベント
+          exec.addEventListener("click", (event) => {
+            event.stopPropagation();
+            executeCode(code.textContent, result);
+            // リセットボタンの表示
+            // TODO: 共通化できる
+            [reset].forEach((element) => {
+              element.style.display = 'inline';
+            });
+          });
+
+          // リセットボタン押下イベント
           reset.addEventListener("click", (event) => {
             event.stopPropagation();
             // オリジナルも一番上には空行がセットされているので同じように追加
             code.textContent = "\n" + initialCode;
             highlight();
             // 初期状態にする
-            [result, reset, exec].forEach((element) => {
+            [result].forEach((element) => {
               element.style.display = 'none';
             });
             // 編集されたのでコピー用のtextareaも初期化する
@@ -134,7 +156,20 @@ const main = async () => {
           // pre枠をクリックで各種ボタンを表示する
           container.addEventListener("click", (event) => {
             if (event.target == event.currentTarget) {
-              [exec, reset].forEach((element) => {
+              // TODO: 共通化できる
+              [reset].forEach((element) => {
+                element.style.display = 'inline';
+              });
+            }
+          });
+
+          // code枠で cmd+Enter or Ctrl+Enterを押下する
+          code.addEventListener("keydown", (event) => {
+            if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+              executeCode(code.textContent, result);
+              // リセットボタンの表示
+              // TODO: 共通化できる
+              [reset].forEach((element) => {
                 element.style.display = 'inline';
               });
             }
