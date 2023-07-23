@@ -28,7 +28,7 @@
         "https://docs.ruby-lang.org/*"
       ],
       "resources": [
-        "node_modules/ruby-head-wasm-wasi/dist/**",
+        "node_modules/ruby-3_2-wasm-wasi/dist/**",
         "src/images/icon16.png"
       ]
     }

@@ -7,7 +7,7 @@ export const execRubyCode = async (code, logger) => {
   console.log = logger;
   // 非同期でrubyコードを実行する
   return evalRubyCode(`
-    require 'js'
+    require "js.so"
     begin
       eval(%q[${code}])
     rescue => e
