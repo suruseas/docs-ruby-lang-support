@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "webpack",
-    "zip": "zip -r docs_ruby_lang_support.zip dist/ node_modules/ manifest.json src/images/"
+    "zip": "zip -r docs_ruby_lang_support.zip dist/ node_modules/ manifest.json src/images/ -x node_modules/ruby-3_2-wasm-wasi/dist/ruby.wasm node_modules/ruby-3_2-wasm-wasi/dist/ruby.debug+stdlib.wasm"
   },
   "dependencies": {
     "prismjs": "^1.29.0",
