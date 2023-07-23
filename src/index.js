@@ -1,11 +1,11 @@
 import "./style.css";
-import { DefaultRubyVM } from "ruby-head-wasm-wasi/dist/browser.umd.js";
+import { DefaultRubyVM } from "ruby-3_2-wasm-wasi/dist/browser.umd.js";
 import Prism from 'prismjs';
 import 'prismjs/components/prism-ruby';
 import 'prismjs/themes/prism.css'
 export var rubyVM;
 
-const loadUrl = new URL(chrome.runtime.getURL('node_modules/ruby-head-wasm-wasi/dist/ruby.wasm'));
+const loadUrl = new URL(chrome.runtime.getURL('node_modules/ruby-3_2-wasm-wasi/dist/ruby+stdlib.wasm'));
 
 export const initRubyVM = async () => {
   const response = await fetch(loadUrl);
