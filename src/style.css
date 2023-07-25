@@ -11,7 +11,7 @@ pre.highlight.ruby code.language-ruby {
 
 .document-ruby-lang-support-button {
   float: right;
-  margin: 0 -1.1em 0.25em 0.5em;
+  margin: 0 0.5em 0.25em 0.5em;
   padding: 0.25em 0.5em;
   background: #DDD;
   opacity: 0.75;
@@ -28,12 +28,9 @@ pre.highlight.ruby code.language-ruby {
   content: url("chrome-extension://__MSG_@@extension_id__/src/images/icon16.png");
   position: absolute;
   top: 0.25em;
-  left: 1.5em;
+  margin-left: 2px;
+  display: none;
   cursor: pointer;
-}
-
-.document-ruby-lang-support-button-reset {
-  margin-right: 1.0em;
 }
 
 .document-ruby-lang-support-result {
