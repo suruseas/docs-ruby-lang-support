@@ -87,8 +87,20 @@ const main = async () => {
 
     // 初期表示に影響しない部分は非同期で処理する
     (async () => {
+      // IME変換状態を保持
+      let isComposing = false;
+      code.addEventListener('compositionstart', () => {
+        isComposing = true;
+      })
+      code.addEventListener('compositionend', () => {
+        isComposing = false;
+      })
+
       // code編集時のハイライトできるようにする
       code.addEventListener('input', () => {
+        // 入力中はハイライトしない
+        if (isComposing) return;
+
         const index = CaretUtil.getCaretPosition(code);
         highlight().then(() => {
           CaretUtil.setCaretPosition(code, index);
@@ -119,6 +131,15 @@ const main = async () => {
         const reset = document.createElement('span');
         if (copy) {
           const frame = document.createElement('span');
+          // 実行ボタンの左マージンを決めてから表示する
+          let prev = exec.previousElementSibling;
+          if (prev.textContent.startsWith('例')) {
+            exec.style.left = `${prev.offsetWidth}px`;
+          } else {
+            exec.style.left = '0px';
+          }
+          exec.style.display = 'block';
+
           // リセットボタンを移動する
           frame.appendChild(copy);
           container.prepend(frame);

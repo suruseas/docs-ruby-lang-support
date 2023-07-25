@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [1.4.1] - 2023-07-25
+
+### Fixed
+
+- [#1](https://github.com/suruseas/docs-ruby-lang-support/issues/1)
+- [#12](https://github.com/suruseas/docs-ruby-lang-support/issues/12)
+- [#9](https://github.com/suruseas/docs-ruby-lang-support/issues/9)
+
 ## [1.4.0] - 2023-07-23
 
 ### Changed

@@ -19,6 +19,7 @@ export const execRubyCode = async (code, logger) => {
     console.log(e);
   }).then((result) => {
     console.log = originalConsoleLog;
-    return result.toJS();
+    // ruby側でエラーが発生するとresultがundefinedになる
+    return result && result.toJS();
   });
 }
