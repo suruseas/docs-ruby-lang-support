@@ -9,7 +9,7 @@ export const execRubyCode = async (code, logger) => {
   return evalRubyCode(`
     require "js.so"
     begin
-      eval(%q!${code.replaceAll('!', '\\!')}!)
+      eval(%q!${code.replaceAll('\\', '\\\\').replaceAll('!', '\\!')}!)
     rescue => e
       puts 'Traceback (most recent call last):'
       puts e.backtrace.map { |v| "\tfrom #{v}" }.join("\n")
