@@ -96,9 +96,12 @@ const main = async () => {
         isComposing = false;
       })
 
+      // Ctrl+Zで一つ前の状態に戻れるように
+      const previousRevisions = [];
+
       // code編集時のハイライトできるようにする
-      code.addEventListener('input', () => {
-        // 入力中はハイライトしない
+      code.addEventListener('input', (event) => {
+        // IME入力中はハイライトしない
         if (isComposing) return;
 
         const index = CaretUtil.getCaretPosition(code);
@@ -110,6 +113,32 @@ const main = async () => {
       code.addEventListener('input', () => {
         syncClipCopyTextarea(container, code);
       });
+
+      // Ctrl+Z
+      code.addEventListener("keydown", (event) => {
+        if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+          let revision = previousRevisions.pop();
+          if (revision === undefined) {
+            // 過去記録がないのでなにもしない
+            return;
+          }
+          const index = CaretUtil.getCaretPosition(code);
+          code.textContent = revision;
+          highlight().then(() => {
+            CaretUtil.setCaretPosition(code, index);
+          });
+        } else if (event.ctrlKey || event.metaKey) {
+          // メタキーは無視する
+          return;
+        } else {
+          // IME入力中のキー入力は無視する
+          if (isComposing) return;
+
+          // 状態を保持しておく
+          console.log(`save: ${event.target.textContent}`);
+          previousRevisions.push(event.target.textContent);
+        }
+      })
 
       const spacer = document.createElement('div');
       spacer.classList.add('document-ruby-lang-support-spacer');
