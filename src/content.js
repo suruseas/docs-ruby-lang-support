@@ -16,7 +16,7 @@ const getClipCopyCode = (textContent) => {
 const waitQuerySelector = async (node, selector) => {
   let obj = null;
   for (let i = 0; i < 10 && !obj; i++) {
-    obj = await new Promise(resolve => setTimeout(() => resolve(node.querySelector(selector), 100)));
+    obj = await new Promise(resolve => setTimeout(() => resolve(node.querySelector(selector), 200)));
   }
 
   if (!obj) { console.error(`${selector} could not be found.`); }
@@ -127,78 +127,80 @@ const main = async () => {
 
       // リセットボタンを含む枠の制御
       waitQuerySelector(container, 'span.highlight__copy-button').then((copy) => {
+        // 見つからなかったら何もしない
+        if (!copy) { return; }
+
         // リセットボタン
         const reset = document.createElement('span');
-        if (copy) {
-          const frame = document.createElement('span');
-          // 実行ボタンの左マージンを決めてから表示する
-          let prev = exec.previousElementSibling;
-          if (prev.textContent.startsWith('例')) {
-            exec.style.left = `${prev.offsetWidth}px`;
-          } else {
-            exec.style.left = '0px';
+
+        const frame = document.createElement('span');
+        // 実行ボタンの左マージンを決めてから表示する
+        let prev = exec.previousElementSibling;
+        if (prev.classList.contains('caption')) {
+          exec.style.left = `${prev.offsetWidth}px`;
+        } else {
+          exec.style.left = '0px';
+        }
+        exec.style.display = 'block';
+
+        // リセットボタンを移動する
+        frame.appendChild(copy);
+        container.prepend(frame);
+
+        reset.classList.add('document-ruby-lang-support-button', 'document-ruby-lang-support-button-reset');
+        reset.appendChild(document.createTextNode('RESET'));
+        // リセットボタンはcopyのframeに追加する
+        frame.appendChild(reset);
+
+        // 実行ボタン押下イベント
+        exec.addEventListener("click", (event) => {
+          event.stopPropagation();
+          executeCode(code.textContent, result);
+          // リセットボタンの表示
+          // TODO: 共通化できる
+          [reset].forEach((element) => {
+            element.style.display = 'inline';
+          });
+        });
+
+        // リセットボタン押下イベント
+        reset.addEventListener("click", (event) => {
+          event.stopPropagation();
+          // オリジナルも一番上には空行がセットされているので同じように追加
+          code.textContent = "\n" + initialCode;
+          highlight();
+          // 初期状態にする
+          [result].forEach((element) => {
+            element.style.display = 'none';
+          });
+          // 編集されたのでコピー用のtextareaも初期化する
+          syncClipCopyTextarea(container, code);
+        });
+
+        // pre枠をクリックで各種ボタンを表示する
+        container.addEventListener("click", (event) => {
+          if (event.target == event.currentTarget) {
+            // TODO: 共通化できる
+            [reset].forEach((element) => {
+              element.style.display = 'inline';
+            });
           }
-          exec.style.display = 'block';
+        });
 
-          // リセットボタンを移動する
-          frame.appendChild(copy);
-          container.prepend(frame);
-
-          reset.classList.add('document-ruby-lang-support-button', 'document-ruby-lang-support-button-reset');
-          reset.appendChild(document.createTextNode('RESET'));
-          // リセットボタンはcopyのframeに追加する
-          frame.appendChild(reset);
-
-          // 実行ボタン押下イベント
-          exec.addEventListener("click", (event) => {
-            event.stopPropagation();
+        // code枠で cmd+Enter or Ctrl+Enterを押下する
+        code.addEventListener("keydown", (event) => {
+          if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
             executeCode(code.textContent, result);
             // リセットボタンの表示
             // TODO: 共通化できる
             [reset].forEach((element) => {
               element.style.display = 'inline';
             });
-          });
-
-          // リセットボタン押下イベント
-          reset.addEventListener("click", (event) => {
-            event.stopPropagation();
-            // オリジナルも一番上には空行がセットされているので同じように追加
-            code.textContent = "\n" + initialCode;
-            highlight();
-            // 初期状態にする
-            [result].forEach((element) => {
-              element.style.display = 'none';
-            });
-            // 編集されたのでコピー用のtextareaも初期化する
-            syncClipCopyTextarea(container, code);
-          });
-
-          // pre枠をクリックで各種ボタンを表示する
-          container.addEventListener("click", (event) => {
-            if (event.target == event.currentTarget) {
-              // TODO: 共通化できる
-              [reset].forEach((element) => {
-                element.style.display = 'inline';
-              });
-            }
-          });
-
-          // code枠で cmd+Enter or Ctrl+Enterを押下する
-          code.addEventListener("keydown", (event) => {
-            if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
-              executeCode(code.textContent, result);
-              // リセットボタンの表示
-              // TODO: 共通化できる
-              [reset].forEach((element) => {
-                element.style.display = 'inline';
-              });
-            }
-          });
-
-          if (index + 1 === containers.length) {
-            console.log('setuped.');
           }
+        });
+
+        if (index + 1 === containers.length) {
+          console.log('setuped.');
         }
       });
     })();
