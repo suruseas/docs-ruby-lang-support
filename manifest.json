@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Ruby sample code assistant",
-  "description": "Ruby 3.2 リファレンスマニュアル(るりま)に掲載のサンプルコードをRuby Wasmを使って実行させることができます。",
-  "version": "1.4.3",
+  "description": "ウェブサイトに掲載のRubyサンプルコードをruby.wasmを使って実行させることができます。",
+  "version": "1.4.4",
   "icons": {
     "16": "src/images/icon16.png",
     "48": "src/images/icon48.png",
