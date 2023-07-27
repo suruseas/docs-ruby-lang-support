@@ -8,12 +8,16 @@ export const execRubyCode = async (code, logger) => {
   // 非同期でrubyコードを実行する
   return evalRubyCode(`
     require "js.so"
+    mod = Module.new
+    def mod.replace(v)
+      v.to_s.gsub(/#{self.to_s}::/, '').gsub(/#{self.to_s}/, 'Object')
+    end
     begin
-      eval(%q!${code.replaceAll('\\', '\\\\').replaceAll('!', '\\!')}!)
+      mod.module_eval(%q!${code.replaceAll('\\', '\\\\').replaceAll('!', '\\!')}!)
     rescue => e
       puts 'Traceback (most recent call last):'
-      puts e.backtrace.map { |v| "\tfrom #{v}" }.join("\n")
-      puts "#{e.class} (#{e.message})"
+      puts e.backtrace.map { |v| "\tfrom #{mod.replace(v)}" }.join("\n")
+      puts "#{mod.replace(e.class)} (#{mod.replace(e.message)})"
     end
   `).catch((e) => {
     console.log(e);
