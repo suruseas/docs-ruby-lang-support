@@ -1,24 +1,19 @@
-# るりまサポート
+Ruby 3.2 リファレンスマニュアルサイトで例示されているサンプルコードをruby.wasmを利用してブラウザ上で動かすことができる機能拡張です。
 
-GoogleChromeの機能拡張で、Ruby 3.2 リファレンスマニュアル(るりま)に掲載のRubyコードを、Ruby Wasmで実行できます。
+対象サイトは以下
 
-## build
+- https://docs.ruby-lang.org/ja/3.2/doc/index.html
+- https://docs.ruby-lang.org/ja/latest/doc/index.html
 
-```
-npm run build
-```
+ブラウザ上で実行・編集できるコードはサンプルコードの左上に赤色の「💎」が表示されます。
 
-## make extension
+コードを実行するにはブラウザ上で
+- 赤色の「💎」をクリック
+- もしくはサンプルコードを編集中に下記ショートカットキー
+  - Macの場合は「cmd + return」
+  - Windowsのは「ctrl + Enter」
+で実行可能です。
 
-```
-npm run make
-```
+なお、以下の制限があります。
 
-## memo
-
-- ruby-3_2-wasm-wasi は 現時点では ruby3.2.0p-0 (2022-12-25) で少し古いので ruby-head-wasm-wasi を利用
-  - ruby-3_2-wasm-wasi 利用時にはbuild時にエラーが出るので `npm install url` が必要
-
-## todo
-
-- パッケージサイズを小さくする。node_modulesに不要な物が多い。
+- ruby.wasmに実装されている機能のコード(Threadなどは実行時エラーとなる)
