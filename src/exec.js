@@ -8,12 +8,16 @@ export const execRubyCode = async (code, logger) => {
   // 非同期でrubyコードを実行する
   return evalRubyCode(`
     require "js.so"
+    $constants = Module.constants
     begin
       eval(%q!${code.replaceAll('\\', '\\\\').replaceAll('!', '\\!')}!)
     rescue => e
       puts 'Traceback (most recent call last):'
       puts e.backtrace.map { |v| "\tfrom #{v}" }.join("\n")
       puts "#{e.class} (#{e.message})"
+    end
+    (Module.constants - $constants).each do |constant|
+      Object.class_eval { remove_const(constant) }
     end
   `).catch((e) => {
     console.log(e);
