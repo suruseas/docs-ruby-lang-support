@@ -55,6 +55,13 @@ const playAnimation = (element, animationClassName) => {
   });
 }
 
+// codeの内容でシンタックスハイライトするメソッド
+const highlight = (code) => {
+  return highlightCode(code.textContent).then((highlightedCode) => {
+    code.innerHTML = highlightedCode;
+  })
+}
+
 const main = async () => {
   console.log(rubyVersion);
   const containers = document.querySelectorAll("pre.highlight.ruby");
@@ -67,15 +74,8 @@ const main = async () => {
     // 初期表示時のコード内容を保持しておく
     const initialCode = getClipCopyCode(code.textContent);
 
-    // codeの内容でシンタックスハイライトするメソッド
-    const highlight = () => {
-      return highlightCode(code.textContent).then((highlightedCode) => {
-        code.innerHTML = highlightedCode;
-      })
-    }
-
     // 初期表示でハイライトする
-    highlight();
+    highlight(code);
     code.setAttribute("contenteditable", "true");
     code.setAttribute("spellcheck", "false");
 
@@ -102,7 +102,7 @@ const main = async () => {
         if (isComposing) return;
 
         const index = CaretUtil.getCaretPosition(code);
-        highlight().then(() => {
+        highlight(code).then(() => {
           CaretUtil.setCaretPosition(code, index);
         });
       });
@@ -168,7 +168,7 @@ const main = async () => {
           event.stopPropagation();
           // オリジナルも一番上には空行がセットされているので同じように追加
           code.textContent = "\n" + initialCode;
-          highlight();
+          highlight(code);
           // 初期状態にする
           [result].forEach((element) => {
             element.style.display = 'none';
