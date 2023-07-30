@@ -62,6 +62,12 @@ const highlight = (code) => {
   })
 }
 
+// コピー用のtextareaの同期用
+const syncClipCopyTextarea = (container, code) => {
+  const copyText = container.querySelector('textarea');
+  copyText.innerHTML = getClipCopyCode(code.textContent);
+}
+
 const main = async () => {
   console.log(rubyVersion);
   const containers = document.querySelectorAll("pre.highlight.ruby");
@@ -199,7 +205,7 @@ const main = async () => {
           }
         });
 
-        if (index + 1 === containers.length) {
+        if (index === containers.length + 1) {
           console.log('setuped.');
         }
       });
