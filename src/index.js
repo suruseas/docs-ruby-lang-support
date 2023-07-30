@@ -1,8 +1,11 @@
 import "./style.css";
 import { DefaultRubyVM } from "ruby-3_2-wasm-wasi/dist/browser.umd.js";
-import Prism from 'prismjs';
-import 'prismjs/components/prism-ruby';
-import 'prismjs/themes/prism.css'
+
+import hljs from 'highlight.js/lib/core';
+import hljsRuby from 'highlight.js/lib/languages/ruby';
+hljs.registerLanguage('ruby', hljsRuby);
+import 'highlight.js/styles/github.css';
+
 export var rubyVM;
 
 const loadUrl = new URL(chrome.runtime.getURL('node_modules/ruby-3_2-wasm-wasi/dist/ruby+stdlib.wasm'));
@@ -25,6 +28,6 @@ export const evalRubyCode = async (code) => {
   return rubyVM.eval(code);
 }
 
-export const prismHighlight = async (code) => {
-  return Prism.highlight(code, Prism.languages.ruby, 'ruby');
+export const highlightCode = async (code) => {
+  return hljs.highlight(code, { language: 'ruby' }).value;
 }

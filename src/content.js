@@ -1,4 +1,4 @@
-import { initRubyVM, getRubyVersion, prismHighlight } from "./index.js";
+import { initRubyVM, getRubyVersion, highlightCode } from "./index.js";
 import { CaretUtil } from "./caret.js";
 import { execRubyCode } from "./exec.js"
 
@@ -69,7 +69,7 @@ const main = async () => {
 
     // codeの内容でシンタックスハイライトするメソッド
     const highlight = () => {
-      return prismHighlight(code.textContent).then((highlightedCode) => {
+      return highlightCode(code.textContent).then((highlightedCode) => {
         code.innerHTML = highlightedCode;
       })
     }

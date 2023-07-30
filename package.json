@@ -4,7 +4,7 @@
     "zip": "zip -r docs_ruby_lang_support.zip dist/ node_modules/ manifest.json src/images/ -x node_modules/ruby-3_2-wasm-wasi/dist/ruby.wasm node_modules/ruby-3_2-wasm-wasi/dist/ruby.debug+stdlib.wasm"
   },
   "dependencies": {
-    "prismjs": "^1.29.0",
+    "highlight.js": "^11.8.0",
     "ruby-3_2-wasm-wasi": "^2.0.0",
     "url": "^0.11.1",
     "webpack": "^5.74.0"
