@@ -75,38 +75,27 @@ const main = async () => {
   containers.forEach((container, index) => {
     // 表示されているcode領域
     const code = container.querySelector('code');
-    code.classList.add('language-ruby');
+    //code.classList.add('language-ruby');
 
     // 初期表示時のコード内容を保持しておく
     const initialCode = getClipCopyCode(code.textContent);
 
     // 初期表示でハイライトする
     highlight(code);
-    code.setAttribute("contenteditable", "true");
-    code.setAttribute("spellcheck", "false");
-
-    // コピー用のtextareaの同期用
-    const syncClipCopyTextarea = (container, code) => {
-      const copyText = container.querySelector('textarea');
-      copyText.innerHTML = getClipCopyCode(code.textContent);
-    }
 
     // 初期表示に影響しない部分は非同期で処理する
     (async () => {
-      // IME変換状態を保持
-      let isComposing = false;
-      code.addEventListener('compositionstart', () => {
-        isComposing = true;
-      })
-      code.addEventListener('compositionend', () => {
-        isComposing = false;
-      })
+      // 編集用の枠を追加する
+      const frame = document.createElement('div');
+      frame.classList.add('document-ruby-lang-support-frame');
+      container.insertBefore(frame, code);
+      frame.appendChild(code);
+
+      // TODO:
+      return;
 
       // code編集時のハイライトできるようにする
       code.addEventListener('input', () => {
-        // 入力中はハイライトしない
-        if (isComposing) return;
-
         const index = CaretUtil.getCaretPosition(code);
         highlight(code).then(() => {
           CaretUtil.setCaretPosition(code, index);
